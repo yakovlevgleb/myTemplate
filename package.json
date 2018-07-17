@@ -15,7 +15,7 @@
     "devDependencies": {
         "autoprefixer": "^8.6.5",
         "browser-sync": "^2.24.5",
-        "css-mqpacker": "^6.0.1",
+        "css-mqpacker": "^7.0.0",
         "del": "^3.0.0",
         "gulp": "^3.9.1",
         "gulp-autoprefixer": "^5.0.0",
