@@ -30,7 +30,7 @@
         "gulp-sass": "^3.1.0",
         "postcss-object-fit-images": "^1.1.2",
         "gulp-imagemin": "^4.1.0",
-        "imagemin-pngquant": "^5.1.0",
+        "imagemin-pngquant": "^6.0.0",
         "gulp-uglify": "^3.0.0",
         "gulp-wait": "^0.0.2",
         "gulp-sequence": "^1.0.0"
