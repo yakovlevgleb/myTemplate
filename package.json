@@ -1,7 +1,7 @@
 {
-    "name": "name_of_project",
+    "name": "manfort",
     "version": "1.0.0",
-    "description": "desc_of_project",
+    "description": "manfort",
     "scripts": {
         "editorconfig": "editorconfig-cli",
         "test": "npm run editorconfig",
@@ -10,7 +10,7 @@
     },
     "author": "Yakovlev Gleb <brin@yandex.ru>",
     "homepage": "none",
-    "repository": "https://github.com/yakovlevgleb/myTemplate",
+    "repository": "https://github.com/yakovlevgleb/manfort",
     "license": "ISC",
     "devDependencies": {
         "autoprefixer": "^8.0.0",
