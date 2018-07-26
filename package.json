@@ -1,7 +1,7 @@
 {
-    "name": "name_of_project",
+    "name": "manfort",
     "version": "1.0.0",
-    "description": "desc_of_project",
+    "description": "manfort",
     "scripts": {
         "editorconfig": "editorconfig-cli",
         "test": "npm run editorconfig",
@@ -10,7 +10,7 @@
     },
     "author": "Yakovlev Gleb <brin@yandex.ru>",
     "homepage": "none",
-    "repository": "https://github.com/yakovlevgleb/myTemplate",
+    "repository": "https://github.com/yakovlevgleb/manfort",
     "license": "ISC",
     "devDependencies": {
         "autoprefixer": "^9.0.0",
@@ -18,7 +18,7 @@
         "css-mqpacker": "^6.0.1",
         "del": "^3.0.0",
         "gulp": "^3.9.1",
-        "gulp-autoprefixer": "^5.0.0",
+        "gulp-autoprefixer": "^4.0.0",
         "gulp-cleancss": "^0.2.2",
         "gulp-concat": "^2.6.1",
         "gulp-jade-inheritance": "^0.5.5",
@@ -26,8 +26,8 @@
         "gulp-notify": "^3.2.0",
         "gulp-plumber": "^1.2.0",
         "gulp-postcss": "^7.0.0",
-        "gulp-rename": "^1.3.0",
-        "gulp-sass": "^3.2.1",
+        "gulp-rename": "^1.2.2",
+        "gulp-sass": "^3.1.0",
         "postcss-object-fit-images": "^1.1.2",
         "gulp-imagemin": "^4.1.0",
         "imagemin-pngquant": "^5.1.0",
@@ -39,7 +39,7 @@
         "gulp-jade": "^1.1.0",
         "gulp-scss": "^1.4.0",
         "gulp-sourcemaps": "^2.6.1",
-        "npm": "^6.2.0"
+        "npm": "^5.8.0"
     },
     "browserslist": [
         ">0.25%",
