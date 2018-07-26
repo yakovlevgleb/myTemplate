@@ -1,15 +1,15 @@
 'use strict';
 
 const dirs = {
-	source: 'static', // папка с исходниками (путь от корня проекта)
-	build: 'public' // папка с результатом работы (путь от корня проекта)
+	source: 'static',
+	build: 'public'
 };
 
 const images = [dirs.source + '/img/**/*.{gif,png,jpg,jpeg,svg,ico}'];
+const icons = [dirs.source + '/i/**/*.{gif,png,jpg,jpeg,svg,ico}'];
 
-// Cписок обрабатываемых файлов в указанной последовательности
 const jsList = [
-	dirs.source + '/js/main.js'
+	dirs.source + '/js/ext/jquery.min.js'
 ];
 
 const folder = process.env.folder;
@@ -46,21 +46,21 @@ let postCssPlugins = [
 ];
 
 gulp.task('sass', function() {
-	return gulp.src(dirs.source + '/scss/styles.scss'). // какой файл компилировать
-	pipe(plumber({ // при ошибках не останавливаем автоматику сборки
+	return gulp.src(dirs.source + '/scss/styles.scss').
+	pipe(plumber({
 		errorHandler: function(err) {
 			notify.onError({title: 'Styles compilation error', message: err.messagegulp})(err);
 			this.emit('end');
 		}
-	})).pipe(wait(100)).pipe(sourcemaps.init()). // инициируем карту кода
-	pipe(sass()). // компилируем
-	// pipe(postcss(postCssPlugins)). // делаем постпроцессинг
-	pipe(sourcemaps.write('/')). // записываем карту кода как отдельный файл
-	pipe(gulp.dest(dirs.build + '/css/')). // записываем CSS-файл
-	pipe(browserSync.stream({match: '**/*.css'})). // укажем browserSync необходимость обновить страницы в браузере
-	pipe(rename('styles.min.css')). // переименовываем (сейчас запишем рядом то же самое, но минимизированное)
-	pipe(cleanCSS()). // сжимаем и оптимизируем
-	pipe(gulp.dest(dirs.build + '/css/')); // записываем CSS-файл
+	})).pipe(wait(100)).pipe(sourcemaps.init()).
+	pipe(sass()).
+
+	pipe(sourcemaps.write('/')).
+	pipe(gulp.dest(dirs.build + '/static/css/')).
+	pipe(browserSync.stream({match: '**/*.css'})).
+	pipe(rename('styles.min.css')).
+	pipe(cleanCSS()).
+	pipe(gulp.dest(dirs.build + '/static/css/'));
 });
 
 gulp.task("jade-concat", function() {
@@ -88,6 +88,23 @@ gulp.task('img', function() {
 	])).pipe(gulp.dest(dirs.build + "/img/")).pipe(browserSync.stream());
 });
 
+gulp.task('icons', function() {
+	return gulp.src(dirs.source + "/i/**/*.*").pipe(imagemin([
+		imagemin.gifsicle({interlaced: true}),
+		imagemin.jpegtran({progressive: true}),
+		imagemin.optipng({optimizationLevel: 5}),
+		imagemin.svgo({
+			plugins: [
+				{
+					removeViewBox: true
+				}, {
+					cleanupIDs: false
+				}
+			]
+		})
+	])).pipe(gulp.dest(dirs.build + "/static/i/")).pipe(browserSync.stream());
+});
+
 gulp.task('img:opt', function(callback) {
 	if (folder) {
 		return gulp.src(folder + '/*.{jpg,jpeg,gif,png,svg}').pipe(imagemin({
@@ -106,28 +123,47 @@ gulp.task('img:opt', function(callback) {
 });
 
 gulp.task('fonts', function() {
-	return gulp.src([dirs.source + '/fonts/**/*.{ttf,woff,woff2,eot,svg}']).pipe(gulp.dest(dirs.build + '/fonts/'));
+	return gulp.src([dirs.source + '/fonts/**/*.{ttf,woff,woff2,eot,svg}']).pipe(gulp.dest(dirs.build + '/static/css/fonts/'));
 });
 
-// Конкатенация и углификация Javascript
-gulp.task('js', function() {
+
+gulp.task('js-ext', function() {
 	if (jsList.length) {
 		return gulp.src(jsList).pipe(plumber({
 			errorHandler: notify.onError(function(error) {
 				return {title: "JS compilation error", message: error.message}
 			})
-		})). // не останавливаем автоматику при ошибках
-		pipe(concat('script.min.js')). // конкатенируем все файлы в один с указанным именем
-		pipe(uglify()). //      сжимаем
-		pipe(gulp.dest(dirs.build + '/js')); // записываем
+		})).
+		pipe(concat('vendor.min.js')).
+		pipe(uglify()).
+		pipe(gulp.dest(dirs.build + '/static/js'));
 	} else {
 		console.log('Javascript не обрабатывается');
 		callback();
 	}
 });
 
+gulp.task('js', function() {
+    return gulp.src(dirs.source + "/js/script.js")
+    .pipe(plumber({
+       errorHandler: notify.onError(function(error) {
+            return {
+               title: "JS compilation error",
+                message: error.message
+            }
+        })
+    }))
+    .pipe(sourcemaps.init())
+  	.pipe(sourcemaps.write())
+		.pipe(uglify())
+		.pipe(rename('script.min.js'))
+    .pipe(gulp.dest(dirs.build + "/static/js/"))
+    .pipe(browserSync.stream());
+ });
+
+
 gulp.task('build', function(callback) {
-	gulpSequence('clean', 'sass', 'js', 'jade-concat', 'img', 'fonts', callback);
+	gulpSequence('clean', 'sass', 'fonts', 'js', 'js-ext', 'jade-concat', 'img', 'icons', callback);
 });
 
 gulp.task('serve', ['build'], function() {
@@ -136,6 +172,9 @@ gulp.task('serve', ['build'], function() {
 
 	if (images.length) {
 		gulp.watch(images, ['img']);
+	}
+	if (icons.length) {
+		gulp.watch(icons, ['icons']);
 	}
 	gulp.watch(dirs.source + "/scss/**/*.scss", ['sass']);
 	gulp.watch(dirs.source + "/jade/**/*.jade", ['jade-concat']);
