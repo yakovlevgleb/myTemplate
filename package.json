@@ -13,8 +13,8 @@
     "repository": "https://github.com/yakovlevgleb/manfort",
     "license": "ISC",
     "devDependencies": {
-        "autoprefixer": "^8.0.0",
-        "browser-sync": "^2.24.4",
+        "autoprefixer": "^9.0.0",
+        "browser-sync": "^2.24.5",
         "css-mqpacker": "^6.0.1",
         "del": "^3.0.0",
         "gulp": "^3.9.1",
