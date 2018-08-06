@@ -25,7 +25,7 @@
         "gulp-jade-template-concat": "0.0.4",
         "gulp-notify": "^3.2.0",
         "gulp-plumber": "^1.2.0",
-        "gulp-postcss": "^7.0.0",
+        "gulp-postcss": "^8.0.0",
         "gulp-rename": "^1.2.2",
         "gulp-sass": "^3.1.0",
         "postcss-object-fit-images": "^1.1.2",
