@@ -39,25 +39,39 @@ gulp.task('clean', function() {
 	return del(dirs.build);
 })
 
-let postCssPlugins = [
-	autoprefixer({browsers: ['last 2 version']}),
-	mqpacker({sort: true}),
-	objectFitImages()
-];
+// let postCssPlugins = [
+// 	autoprefixer({
+// 		browsers: ['last 2 version']
+// 	}),
+// 	mqpacker({
+// 		sort: true
+// 	}),
+// 	objectFitImages()
+// ];
 
 gulp.task('sass', function() {
 	return gulp.src(dirs.source + '/scss/styles.scss').
 	pipe(plumber({
 		errorHandler: function(err) {
-			notify.onError({title: 'Styles compilation error', message: err.messagegulp})(err);
+			notify.onError({
+				title: 'Styles compilation error',
+				message: err.messagegulp
+			})(err);
 			this.emit('end');
 		}
 	})).pipe(wait(100)).pipe(sourcemaps.init()).
 	pipe(sass()).
-
+	pipe(postcss([
+		autoprefixer({
+			browsers: ['last 2 version']
+		}),
+		mqpacker
+	])).
 	pipe(sourcemaps.write('/')).
 	pipe(gulp.dest(dirs.build + '/static/css/')).
-	pipe(browserSync.stream({match: '**/*.css'})).
+	pipe(browserSync.stream({
+		match: '**/*.css'
+	})).
 	pipe(rename('styles.min.css')).
 	pipe(cleanCSS()).
 	pipe(gulp.dest(dirs.build + '/static/css/'));
@@ -66,41 +80,57 @@ gulp.task('sass', function() {
 gulp.task("jade-concat", function() {
 	gulp.src(dirs.source + '/jade/*.jade').pipe(plumber({
 		errorHandler: notify.onError(function(error) {
-			return {title: "Jade compilation error", message: error.message}
+			return {
+				title: "Jade compilation error",
+				message: error.message
+			}
 		})
-	})).pipe(jade({pretty: true, compileDebug: true})).pipe(gulp.dest(dirs.build + '/')).pipe(browserSync.reload({stream: true}));
+	})).pipe(jade({
+		pretty: true,
+		compileDebug: true
+	})).pipe(gulp.dest(dirs.build + '/')).pipe(browserSync.reload({
+		stream: true
+	}));
 });
 
 gulp.task('img', function() {
 	return gulp.src(dirs.source + "/img/**/*.*").pipe(imagemin([
-		imagemin.gifsicle({interlaced: true}),
-		imagemin.jpegtran({progressive: true}),
-		imagemin.optipng({optimizationLevel: 5}),
+		imagemin.gifsicle({
+			interlaced: true
+		}),
+		imagemin.jpegtran({
+			progressive: true
+		}),
+		imagemin.optipng({
+			optimizationLevel: 5
+		}),
 		imagemin.svgo({
-			plugins: [
-				{
-					removeViewBox: true
-				}, {
-					cleanupIDs: false
-				}
-			]
+			plugins: [{
+				removeViewBox: true
+			}, {
+				cleanupIDs: false
+			}]
 		})
 	])).pipe(gulp.dest(dirs.build + "/img/")).pipe(browserSync.stream());
 });
 
 gulp.task('icons', function() {
 	return gulp.src(dirs.source + "/i/**/*.*").pipe(imagemin([
-		imagemin.gifsicle({interlaced: true}),
-		imagemin.jpegtran({progressive: true}),
-		imagemin.optipng({optimizationLevel: 5}),
+		imagemin.gifsicle({
+			interlaced: true
+		}),
+		imagemin.jpegtran({
+			progressive: true
+		}),
+		imagemin.optipng({
+			optimizationLevel: 5
+		}),
 		imagemin.svgo({
-			plugins: [
-				{
-					removeViewBox: true
-				}, {
-					cleanupIDs: false
-				}
-			]
+			plugins: [{
+				removeViewBox: true
+			}, {
+				cleanupIDs: false
+			}]
 		})
 	])).pipe(gulp.dest(dirs.build + "/static/i/")).pipe(browserSync.stream());
 });
@@ -109,11 +139,9 @@ gulp.task('img:opt', function(callback) {
 	if (folder) {
 		return gulp.src(folder + '/*.{jpg,jpeg,gif,png,svg}').pipe(imagemin({
 			progressive: true,
-			svgoPlugins: [
-				{
-					removeViewBox: false
-				}
-			],
+			svgoPlugins: [{
+				removeViewBox: false
+			}],
 			use: [pngquant()]
 		})).pipe(gulp.dest(folder));
 	} else {
@@ -131,7 +159,10 @@ gulp.task('js-ext', function() {
 	if (jsList.length) {
 		return gulp.src(jsList).pipe(plumber({
 			errorHandler: notify.onError(function(error) {
-				return {title: "JS compilation error", message: error.message}
+				return {
+					title: "JS compilation error",
+					message: error.message
+				}
 			})
 		})).
 		pipe(concat('vendor.min.js')).
@@ -144,22 +175,22 @@ gulp.task('js-ext', function() {
 });
 
 gulp.task('js', function() {
-    return gulp.src(dirs.source + "/js/script.js")
-    .pipe(plumber({
-       errorHandler: notify.onError(function(error) {
-            return {
-               title: "JS compilation error",
-                message: error.message
-            }
-        })
-    }))
-    .pipe(sourcemaps.init())
-  	.pipe(sourcemaps.write())
+	return gulp.src(dirs.source + "/js/script.js")
+		.pipe(plumber({
+			errorHandler: notify.onError(function(error) {
+				return {
+					title: "JS compilation error",
+					message: error.message
+				}
+			})
+		}))
+		.pipe(sourcemaps.init())
+		.pipe(sourcemaps.write())
 		.pipe(uglify())
 		.pipe(rename('script.min.js'))
-    .pipe(gulp.dest(dirs.build + "/static/js/"))
-    .pipe(browserSync.stream());
- });
+		.pipe(gulp.dest(dirs.build + "/static/js/"))
+		.pipe(browserSync.stream());
+});
 
 
 gulp.task('build', function(callback) {
@@ -168,7 +199,12 @@ gulp.task('build', function(callback) {
 
 gulp.task('serve', ['build'], function() {
 
-	browserSync.init({server: dirs.build, startPath: 'index.html', open: false, port: 8080});
+	browserSync.init({
+		server: dirs.build,
+		startPath: 'index.html',
+		open: false,
+		port: 8080
+	});
 
 	if (images.length) {
 		gulp.watch(images, ['img']);
