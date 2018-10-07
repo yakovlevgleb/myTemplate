@@ -16,7 +16,7 @@ const folder = process.env.folder;
 
 const gulp = require('gulp');
 const gulpSequence = require('gulp-sequence');
-const sass = require('gulp-sass');
+const stylus = require('gulp-stylus');
 const rename = require('gulp-rename');
 const postcss = require('gulp-postcss');
 const autoprefixer = require('autoprefixer');
@@ -39,18 +39,8 @@ gulp.task('clean', function() {
 	return del(dirs.build);
 })
 
-// let postCssPlugins = [
-// 	autoprefixer({
-// 		browsers: ['last 2 version']
-// 	}),
-// 	mqpacker({
-// 		sort: true
-// 	}),
-// 	objectFitImages()
-// ];
-
-gulp.task('sass', function() {
-	return gulp.src(dirs.source + '/scss/styles.scss').
+gulp.task('stylus', function() {
+	return gulp.src(dirs.source + '/styl/styles.styl').
 	pipe(plumber({
 		errorHandler: function(err) {
 			notify.onError({
@@ -60,7 +50,9 @@ gulp.task('sass', function() {
 			this.emit('end');
 		}
 	})).pipe(wait(100)).pipe(sourcemaps.init()).
-	pipe(sass()).
+	pipe(stylus({
+		'include css': true
+	})).
 	pipe(postcss([
 		autoprefixer({
 			browsers: ['last 2 version']
@@ -194,7 +186,7 @@ gulp.task('js', function() {
 
 
 gulp.task('build', function(callback) {
-	gulpSequence('clean', 'sass', 'fonts', 'js', 'js-ext', 'jade-concat', 'img', 'icons', callback);
+	gulpSequence('clean', 'stylus', 'fonts', 'js', 'js-ext', 'jade-concat', 'img', 'icons', callback);
 });
 
 gulp.task('serve', ['build'], function() {
@@ -212,7 +204,7 @@ gulp.task('serve', ['build'], function() {
 	if (icons.length) {
 		gulp.watch(icons, ['icons']);
 	}
-	gulp.watch(dirs.source + "/scss/**/*.scss", ['sass']);
+	gulp.watch(dirs.source + "/styl/**/*.styl", ['stylus']);
 	gulp.watch(dirs.source + "/jade/**/*.jade", ['jade-concat']);
 	gulp.watch(dirs.source + '/fonts/*.{ttf,woff,woff2,eot,svg}', ['fonts']);
 	gulp.watch(dirs.source + "/js/**/*.js", ['js']);
