@@ -1,27 +1,36 @@
-html
-  -webkit-box-sizing border-box
-  box-sizing border-box
+html {
+	-webkit-box-sizing border-box;
+	box-sizing border-box;
+}
 
 *,
 *::after,
-*::before
-  -webkit-box-sizing inherit
-  box-sizing inherit
+*::before {
+	-webkit-box-sizing inherit;
+	box-sizing inherit;
+}
 
 body,
-html
-  width 100%
+html {
+	width 100%;
+}
 
-.foo
-  width 240px
+.foo {
+	width 240px;
+}
 
-@media screen and (min-width: 768px)
-  .foo
-    width 576px
+@media screen and (min-width: 768px) {
+  .foo {
+		width 576px;
+	}
+}
 
-.bar
-  width 160px
+.bar {
+	width 160px;
+}
 
-@media screen and (min-width: 768px)
-  .bar
-    width 384px
+@media screen and (min-width: 768px) {
+	.bar {
+		width 384px;
+	}
+}

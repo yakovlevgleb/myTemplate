@@ -1,7 +1,7 @@
 {
-    "name": "manfort",
+    "name": "project-name",
     "version": "1.0.0",
-    "description": "manfort",
+    "description": "project-name",
     "scripts": {
         "editorconfig": "editorconfig-cli",
         "test": "npm run editorconfig",
@@ -10,7 +10,7 @@
     },
     "author": "Yakovlev Gleb <brin@yandex.ru>",
     "homepage": "none",
-    "repository": "https://github.com/yakovlevgleb/manfort",
+    "repository": "https://github.com/yakovlevgleb/project-name",
     "license": "ISC",
     "devDependencies": {
         "autoprefixer": "^9.0.0",
