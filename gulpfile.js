@@ -2,7 +2,7 @@
 
 const dirs = {
 	source: 'static',
-	build: 'public1'
+	build: 'public'
 };
 
 const images = [dirs.source + '/img/**/*.{gif,png,jpg,jpeg,svg,ico}'];
