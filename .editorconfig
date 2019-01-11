@@ -8,7 +8,7 @@ insert_final_newline = true
 
 [*.{css,less,scss,jade}]
 indent_style = tab
-indent_size = 3
+indent_size = 2
 
 [*.{hbs,stache,mustache,jade,html,xml}]
 indent_style = tab
