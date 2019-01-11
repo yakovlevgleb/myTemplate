@@ -32,7 +32,7 @@
         "gulp-stylus": "^2.7.0",
         "gulp-uglify": "^3.0.0",
         "gulp-wait": "^0.0.2",
-        "imagemin-pngquant": "^6.0.0",
+        "imagemin-pngquant": "^7.0.0",
         "postcss-object-fit-images": "^1.1.2"
     },
     "dependencies": {
