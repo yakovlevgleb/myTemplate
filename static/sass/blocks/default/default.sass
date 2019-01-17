@@ -1,0 +1,298 @@
+.wis-content {
+	display: flex;
+	flex-direction: column;
+	max-width 867px;
+	margin-bottom 76px;
+	min-height: calc(100vh - 142px - 80px - 32px - 294px - 76px);
+
+	a {
+		text-decoration: none;
+
+		color: $green;
+		border-bottom: 1px solid $green;
+		transition: all 0.5s ease-out;
+		font-size: 18px;
+		line-height: 23px;
+		font-weight: normal;
+
+		display: inline-block;
+
+		&:hover {
+			border-color: transparent;
+		}
+
+		& + p {
+			margin-top: 20px;
+		}
+	}
+
+	p {
+		color: #282828;
+
+		font-size: 18px;
+		font-weight: normal;
+		line-height: 30px;
+
+		margin-bottom: 20px;
+
+		& + img {
+			margin-top: 17px;
+		}
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+	}
+
+	h1 {
+		font-size: 60px;
+		line-height: 64px;
+		color: $title-color;
+		font-weight: 800;
+		text-transform: none;
+		margin-bottom: 32px;
+	}
+
+	h2 {
+		font-size: 50px;
+		line-height: 54px;
+		color: $title-color;
+		font-weight: 800;
+		text-transform: none;
+		margin-bottom: 32px;
+		margin-top: 43px;
+	}
+
+	h3 {
+		font-size: 40px;
+		line-height: 44px;
+		color: $title-color;
+		font-weight: 800;
+		text-transform: none;
+		margin-bottom: 32px;
+		margin-top: 43px;
+	}
+
+	h4 {
+		font-size: 30px;
+		line-height: 34px;
+		color: $title-color;
+		font-weight: 800;
+		text-transform: none;
+		margin-bottom: 32px;
+		margin-top: 43px;
+	}
+
+	ol {
+		padding: 0;
+
+		list-style: none;
+
+		margin-bottom: 30px;
+		margin-top 0;
+
+		counter-reset: number;
+
+		& + h1,
+		& + h2,
+		& + h3 {
+			margin-top: 47px;
+		}
+
+		li {
+			position: relative;
+
+			margin-bottom: 20px;
+			padding-left: 30px;
+
+			color: $title-color;
+
+			font-size: 18px;
+			font-weight: normal;
+			line-height: 30px;
+
+			&:last-child {
+				margin-bottom 0;
+			}
+
+			&:before {
+				position: absolute;
+				left: 0;
+
+				content: counters(number, ".") ".";
+				counter-increment: number;
+
+				color: $list;
+
+				font-size: 18px;
+				line-height: 30px;
+				font-weight: 800;
+			}
+		}
+	}
+
+	ul {
+		padding: 0;
+
+		margin-bottom: 30px;
+
+		list-style: none;
+
+		& + h1,
+		& + h2,
+		& + h3 {
+			margin-top: 47px;
+		}
+
+		li {
+			position: relative;
+
+			margin-bottom: 19px;
+			padding-left: 30px;
+
+			color: $title-color;
+
+			font-size: 18px;
+			font-weight: normal;
+			line-height: 30px;
+
+			&:last-child {
+				margin-bottom: 0;
+			}
+
+			&:before {
+				position: absolute;
+				top: 11px;
+				left: 0;
+
+				width: 8px;
+				height: 8px;
+				border-radius: 50%;
+				background-color: $list;
+
+				content: '';
+			}
+		}
+	}
+
+	img {
+		max-width: 100%;
+		max-height: 100%;
+		width: auto;
+		height: auto;
+		margin-bottom: 30px;
+
+		&:last-child {
+			margin-bottom: 0;
+		}
+
+		& + p {
+			margin-top: 20px;
+		}
+	}
+
+	figcaption {
+		margin-top: -20px;
+		margin-bottom: 29px;
+
+		color: #afafaf;
+
+		font-size: 18px;
+		font-weight: 400;
+		line-height: 20px;
+	}
+
+	.table-responsive {
+		overflow-x: auto;
+	}
+
+	table {
+		-webkit-box-sizing: content-box;
+		        box-sizing: content-box;
+		width: 99%;
+		margin-top: 7px;
+		margin-bottom: 36px;
+
+		border-spacing: 0;
+
+		border: 1px solid $table;
+		border-collapse: collapse;
+
+		tr {
+			border-bottom: 1px solid #dfe4ea;
+			&:first-child {
+				margin-bottom none;
+			}
+
+			&:last-child {
+				border-bottom: none;
+			}
+
+			th {
+				height: 48px;
+				padding-left: 20px;
+
+				text-align: left;
+
+				color: $white;
+				background-color: $table;
+
+				font-size: 18px;
+				line-height: 22px;
+				font-weight: normal;
+			}
+
+			td {
+				padding: 16px 20px;
+				border-right: 1px solid #dfe4ea;
+
+				color: $table;
+
+				font-size: 18px;
+				line-height: 22px;
+				font-weight: normal;
+
+				&:last-child {
+					border-right: none;
+				}
+			}
+		}
+	}
+}
+
+@media only screen and (max-width:1023px) {
+	.wis-content {
+		min-height: inherit;
+	}
+}
+
+@media only screen and (max-width:767px) {
+	.wis-content {
+		h1 {
+			font-size: 32px;
+			line-height: 34px;
+			margin-bottom: 32px;
+		}
+
+		h2 {
+			font-size: 28px;
+			line-height: 30px;
+			margin-bottom: 32px;
+			margin-top: 43px;
+		}
+
+		h3 {
+			font-size: 24px;
+			line-height: 26px;
+			margin-bottom: 32px;
+			margin-top: 43px;
+		}
+
+		h4 {
+			font-size: 22px;
+			line-height: 24px;
+			margin-bottom: 32px;
+			margin-top: 43px;
+		}
+	}
+}
