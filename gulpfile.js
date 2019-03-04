@@ -27,7 +27,7 @@ const del = require('del');
 const sourcemaps = require('gulp-sourcemaps');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync').create();
-const jade = require('gulp-jade');
+const pug = require('gulp-pug');
 const notify = require('gulp-notify');
 const plumber = require('gulp-plumber');
 const cleanCSS = require('gulp-cleancss');
@@ -35,12 +35,28 @@ const imagemin = require('gulp-imagemin');
 const pngquant = require('imagemin-pngquant');
 const uglify = require('gulp-uglify');
 const wait = require('gulp-wait');
+const sorting = require('postcss-sorting');
+const focus = require('postcss-focus');
+const short = require('postcss-short');
 
 gulp.task('clean', function() {
 	return del(dirs.build);
 })
 
 gulp.task('sass', function () {
+	var processors = [
+		short,
+		focus,
+		autoprefixer(['last 2 version'], {
+			cascade: true
+		}),
+		mqpacker({
+			sort: true
+		}),
+		sorting({
+			"sort-order": "yandex"
+		})
+	];
 	return gulp.src(dirs.source + '/sass/styles.sass').
 		pipe(plumber({
 			errorHandler: function (err) {
@@ -52,12 +68,7 @@ gulp.task('sass', function () {
 			}
 		})).pipe(wait(100)).pipe(sourcemaps.init()).
 		pipe(sass()).
-		pipe(postcss([
-			autoprefixer({
-				browsers: ['last 2 version']
-			}),
-			mqpacker
-		])).
+		pipe(postcss(processors)).
 		pipe(sourcemaps.write('/')).
 		pipe(gulp.dest(dirs.build + '/static/css/')).
 		pipe(browserSync.stream({
@@ -68,15 +79,15 @@ gulp.task('sass', function () {
 		pipe(gulp.dest(dirs.build + '/static/css/'));
 });
 
-gulp.task("jade-concat", function() {
-	gulp.src(dirs.source + '/jade/*.jade').pipe(plumber({
+gulp.task("pug-concat", function() {
+	gulp.src(dirs.source + '/pug/*.pug').pipe(plumber({
 		errorHandler: notify.onError(function(error) {
 			return {
-				title: "Jade compilation error",
+				title: "PUG compilation error",
 				message: error.message
 			}
 		})
-	})).pipe(jade({
+	})).pipe(pug({
 		pretty: true,
 		compileDebug: true
 	})).pipe(gulp.dest(dirs.build + '/')).pipe(browserSync.reload({
@@ -185,7 +196,7 @@ gulp.task('js', function() {
 
 
 gulp.task('build', function(callback) {
-	gulpSequence('clean', 'sass', 'fonts', 'js', 'js-ext', 'jade-concat', 'img', 'icons', callback);
+	gulpSequence('clean', 'sass', 'fonts', 'js', 'js-ext', 'pug-concat', 'img', 'icons', callback);
 });
 
 gulp.task('serve', ['build'], function() {
@@ -206,7 +217,7 @@ gulp.task('serve', ['build'], function() {
 		gulp.watch(icons, ['icons']);
 	}
 	gulp.watch(dirs.source + "/sass/**/*.sass", ['sass']);
-	gulp.watch(dirs.source + "/jade/**/*.jade", ['jade-concat']);
+	gulp.watch(dirs.source + "/pug/**/*.pug", ['pug-concat']);
 	gulp.watch(dirs.source + '/fonts/*.{ttf,woff,woff2,eot,svg}', ['fonts']);
 	gulp.watch(dirs.source + "/js/**/*.js", ['js']);
 });

@@ -22,8 +22,6 @@
 		"gulp-cleancss": "^0.2.2",
 		"gulp-concat": "^2.6.1",
 		"gulp-imagemin": "^5.0.0",
-		"gulp-jade-inheritance": "^0.5.5",
-		"gulp-jade-template-concat": "0.0.4",
 		"gulp-notify": "^3.2.0",
 		"gulp-plumber": "^1.2.0",
 		"gulp-postcss": "^8.0.0",
@@ -33,10 +31,13 @@
 		"gulp-uglify": "^3.0.0",
 		"gulp-wait": "^0.0.2",
 		"imagemin-pngquant": "^7.0.0",
-		"postcss-object-fit-images": "^1.1.2"
+		"postcss-object-fit-images": "^1.1.2",
+		"postcss-sorting": "^1.2.0",
+		"postcss-focus": "^4.0.0",
+		"postcss-short": "^5.0.0"
 	},
 	"dependencies": {
-		"gulp-jade": "^1.1.0",
+		"gulp-pug": "^4.0.0",
 		"gulp-sass": "^4.0.0",
 		"gulp-sourcemaps": "^2.6.1",
 		"npm": "^6.3.0"
@@ -47,7 +48,7 @@
 		"not op_mini all"
 	],
 	"editorconfig-cli": [
-		"./static/jade/**/*.jade",
+		"./static/pug/**/*.pug",
 		"./static/js/**/*.js",
 		"./static/img/**/*.svg",
 		"./static/sass/**/*.scss"
