@@ -37,7 +37,7 @@ const uglify = require('gulp-uglify');
 const wait = require('gulp-wait');
 const sorting = require('postcss-sorting');
 const focus = require('postcss-focus');
-const short = require('postcss-short'),
+const short = require('postcss-short');
 
 gulp.task('clean', function() {
 	return del(dirs.build);
