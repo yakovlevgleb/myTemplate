@@ -9,7 +9,10 @@ const images = [dirs.source + '/img/**/*.{gif,png,jpg,jpeg,svg,ico}'];
 const icons = [dirs.source + '/i/**/*.{gif,png,jpg,jpeg,svg,ico}'];
 
 const jsList = [
-	dirs.source + '/js/ext/jquery.min.js'
+	// dirs.source + '/js/ext/choices.js',
+	// dirs.source + '/js/ext/swiper.js',
+	// dirs.source + '/js/ext/sticky-sidebar.js',
+	// dirs.source + '/js/ext/imask.js'
 ];
 
 const folder = process.env.folder;
@@ -38,6 +41,9 @@ const wait = require('gulp-wait');
 const sorting = require('postcss-sorting');
 const focus = require('postcss-focus');
 const short = require('postcss-short');
+const assets = require('postcss-assets');
+const babel = require('gulp-babel');
+const sortCSSmq = require('sort-css-media-queries');
 
 gulp.task('clean', function() {
 	return del(dirs.build);
@@ -51,7 +57,11 @@ gulp.task('sass', function () {
 			cascade: true
 		}),
 		mqpacker({
-			sort: true
+			sort: sortCSSmq
+		}),
+		assets({
+			basePath: 'static/',
+			loadPaths: ['i/', 'img/']
 		}),
 		sorting({
 			"sort-order": "yandex"
@@ -116,7 +126,22 @@ gulp.task('img', function() {
 	])).pipe(gulp.dest(dirs.build + "/img/")).pipe(browserSync.stream());
 });
 
-gulp.task('icons', function() {
+gulp.task('img:opt', function(callback) {
+	if (folder) {
+		return gulp.src(folder + '/*.{jpg,jpeg,gif,png,svg}').pipe(imagemin({
+			progressive: true,
+			svgoPlugins: [{
+				removeViewBox: false
+			}],
+			use: [pngquant()]
+		})).pipe(gulp.dest(folder));
+	} else {
+		console.log('Не указана папка с картинками. Пример вызова команды: folder=src/blocks/test-block/img npm start img:opt');
+		callback();
+	}
+});
+
+gulp.task('icons', function () {
 	return gulp.src(dirs.source + "/i/**/*.*").pipe(imagemin([
 		imagemin.gifsicle({
 			interlaced: true
@@ -137,32 +162,20 @@ gulp.task('icons', function() {
 	])).pipe(gulp.dest(dirs.build + "/static/i/")).pipe(browserSync.stream());
 });
 
-gulp.task('img:opt', function(callback) {
-	if (folder) {
-		return gulp.src(folder + '/*.{jpg,jpeg,gif,png,svg}').pipe(imagemin({
-			progressive: true,
-			svgoPlugins: [{
-				removeViewBox: false
-			}],
-			use: [pngquant()]
-		})).pipe(gulp.dest(folder));
-	} else {
-		console.log('Не указана папка с картинками. Пример вызова команды: folder=src/blocks/test-block/img npm start img:opt');
-		callback();
-	}
-});
-
 gulp.task('fonts', function() {
 	return gulp.src([dirs.source + '/fonts/**/*.{ttf,woff,woff2,eot,svg}']).pipe(gulp.dest(dirs.build + '/static/css/fonts/'));
 });
 
+gulp.task('polyfill', function () {
+	return gulp.src(dirs.source + "/js/polyfill.js").pipe(gulp.dest(dirs.build + '/static/js'));
+});
 
 gulp.task('js-ext', function() {
 	if (jsList.length) {
 		return gulp.src(jsList).pipe(plumber({
 			errorHandler: notify.onError(function(error) {
 				return {
-					title: "JS compilation error",
+					title: "JS libs compilation error",
 					message: error.message
 				}
 			})
@@ -186,17 +199,17 @@ gulp.task('js', function() {
 				}
 			})
 		}))
-		.pipe(sourcemaps.init())
-		.pipe(sourcemaps.write())
+		.pipe(babel({
+			presets: ['@babel/env']
+		}))
 		.pipe(uglify())
 		.pipe(rename('script.min.js'))
 		.pipe(gulp.dest(dirs.build + "/static/js/"))
 		.pipe(browserSync.stream());
 });
 
-
 gulp.task('build', function(callback) {
-	gulpSequence('clean', 'sass', 'fonts', 'js', 'js-ext', 'pug-concat', 'img', 'icons', callback);
+	gulpSequence('clean', 'sass', 'fonts', 'js', 'js-ext', 'polyfill', 'pug-concat', 'icons', 'img', callback);
 });
 
 gulp.task('serve', ['build'], function() {
@@ -216,6 +229,7 @@ gulp.task('serve', ['build'], function() {
 	if (icons.length) {
 		gulp.watch(icons, ['icons']);
 	}
+	gulp.watch(dirs.source + "/sass/ext/*.css", ['sass']);
 	gulp.watch(dirs.source + "/sass/**/*.sass", ['sass']);
 	gulp.watch(dirs.source + "/pug/**/*.pug", ['pug-concat']);
 	gulp.watch(dirs.source + '/fonts/*.{ttf,woff,woff2,eot,svg}', ['fonts']);
