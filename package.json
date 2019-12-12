@@ -39,7 +39,7 @@
 		"postcss-object-fit-images": "^1.1.2",
 		"postcss-short": "^5.0.0",
 		"postcss-sorting": "^5.0.0",
-		"sort-css-media-queries": "1.4.3"
+		"sort-css-media-queries": "1.5.0"
 	},
 	"dependencies": {
 		"gulp-pug": "^4.0.0",
