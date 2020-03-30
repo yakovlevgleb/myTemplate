@@ -14,6 +14,7 @@
 git clone https://github.com/yakovlevgleb/myTemplate
 cd myTemplate
 npm i
+npm start
 npm run build
 
 ```
