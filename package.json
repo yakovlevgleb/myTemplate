@@ -11,7 +11,7 @@
   "author": "xpcrtv",
   "license": "ISC",
   "devDependencies": {
-    "@babel/core": "^7.8.7",
+    "@babel/core": "^7.10.0",
     "@babel/preset-env": "^7.8.7",
     "browser-sync": "^2.26.7",
     "del": "^5.1.0",
