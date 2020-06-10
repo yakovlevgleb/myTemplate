@@ -4,7 +4,7 @@ const rename = require('gulp-rename');
 const babel = require('gulp-babel');
 const concat = require('gulp-concat');
 const browserSync = require('browser-sync');
-const config = require('../config');
+const config = require('../config.json');
 
 gulp.task('scripts', () =>
 	gulp
